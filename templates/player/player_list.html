@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="row">
+
+    <div class="col-6">
+        <div style="display: flex; justify-content: space-between">
+
+            <div class="mt-3">
+                <form class="d-flex input-group w-auto" action="{% url 'cricket_app:player_list' %}">
+                    <input
+                            type="search"
+                            name="search"
+                            class="form-control rounded"
+                            placeholder="Search"
+                    />
+                </form>
+                <br>
+                <a class="btn btn-primary"
+                   data-bs-toggle="collapse"
+                   href="#collapseExample"
+                   role="button"
+                   aria-expanded="false"
+                   aria-controls="collapseExample">Filter</a>
+                <a href="{% url 'cricket_app:player_list' %}">
+                    <button type="reset" class="btn btn-secondary">Clear all</button>
+                </a>
+                <div class="collapse mt-3" id="collapseExample">
+                    <div class="card card-body">
+                        <div class="row">
+                            <form method="GET">
+                                {{ filter.form.as_p }}
+                                <button type="submit" class="btn btn-primary">Apply</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<br>
+<a class="btn btn-outline-primary w-100" href="{% url 'cricket_app:player_create' %}">Create new player</a>
+<br>
+<br>
+{% if players %}
+<table class="table table-hover">
+    <thead class="bg-light">
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Team Name</th>
+        <th></th>
+    </tr>
+    </thead>
+    {% for player in players %}
+    <tbody>
+    <tr>
+        <td>
+            <div class="d-flex align-items-center">
+                <div class="ms-3">
+                    <p class="fw-bold mb-1">{{ player.id }}</p>
+                </div>
+            </div>
+        </td>
+        <td>
+            <div class="d-flex align-items-center">
+                <img src="{{ player.image.url }}" alt="Player Image" style="width: 45px; height: 45px"
+                     class="rounded-circle"/>
+                <div class="ms-3">
+                    <p class="fw-bold mb-1">{{ player.first_name }} {{ player.last_name }}</p>
+                </div>
+            </div>
+        </td>
+        <td>
+            <p class="fw-normal mb-1">{{ player.team }}</p>
+        </td>
+        <td>
+            <a class="btn btn-outline-primary" href="{% url 'cricket_app:player_update' player.id %}">Edit</a>
+            <button class="btn btn-outline-danger" data-bs-toggle="modal"
+                    data-bs-target="#DeleteModal{{ player.id }}">Delete
+            </button>
+        </td>
+    </tr>
+    </tbody>
+    <!-- Player Delete Modal -->
+    <div class="modal fade" id="DeleteModal{{ player.id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Delete Player</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{% url 'cricket_app:player_delete' player.id %}" method="POST">
+                        {% csrf_token %}
+                        Are you sure you want to delete <b>{{ player.first_name }} {{ player.last_name }}</b>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Delete</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</table>
+{% else %}
+<small>No result found</small>
+{% endif %}
+{% endblock content %}

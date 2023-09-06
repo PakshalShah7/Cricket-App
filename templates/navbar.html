@@ -1,0 +1,30 @@
+{% load static %}
+<!--Navbar-->
+<link type="text/css" rel="stylesheet" href="{% static 'css/navbar.css' %}"/>
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'cricket_app:index' %}">CRICKET EXCHANGE</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                aria-expanded="false"
+                aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'cricket_app:team_list' %}">Teams</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'cricket_app:match_list' %}">Matches</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'cricket_app:player_list' %}">Players</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'cricket_app:squad_list' %}">Squads</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<!-- End Navbar -->

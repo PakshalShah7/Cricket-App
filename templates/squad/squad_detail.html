@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block content %}
+<table class="table mb-0 bg-white">
+    <tr>
+        <th>Squad ID:</th>
+        <td><p>{{ squad.id }}</p></td>
+    </tr>
+    <tr>
+        <th>Squad name:</th>
+        <td><p>{{ squad.name }}</p></td>
+    </tr>
+    <tr>
+        <th>Team:</th>
+        <td><p>{{ squad.team.name }}</p></td>
+    </tr>
+</table>
+<br>
+
+<h3>Total Squad Players:</h3>
+<br>
+{% for player in squad.players.all %}
+<h5><a style="color: black" href="{% url 'cricket_app:player_detail' player.id %}">
+    {{ player.first_name }} {{ player.last_name }}</a></h5>
+<br>
+{% endfor %}
+
+<h3>Playing XI</h3>
+<br>
+{% for player in squad.playing_eleven.all %}
+{% if player.captain.all %}
+<h5><a style="color: black" href="{% url 'cricket_app:player_detail' player.id %}">
+    {{ player.first_name }} {{ player.last_name }} (C)</a></h5>
+{% elif player.vice_captain.all %}
+<h5><a style="color: black" href="{% url 'cricket_app:player_detail' player.id %}">
+    {{ player.first_name }} {{ player.last_name }} (VC)</a></h5>
+{% else %}
+<h5><a style="color: black" href="{% url 'cricket_app:player_detail' player.id %}">
+    {{ player.first_name }} {{ player.last_name }}</a></h5>
+{% endif %}
+<br>
+{% endfor %}
+
+<h3>Bench Players</h3>
+<br>
+{% for player in squad.on_bench.all %}
+<h5><a style="color: black" href="{% url 'cricket_app:player_detail' squad.id %}">
+    {{ player.first_name }} {{ player.last_name }}</a></h5>
+<br>
+{% endfor %}
+{% endblock content %}
